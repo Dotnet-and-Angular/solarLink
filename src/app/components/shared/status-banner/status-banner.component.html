@@ -1,0 +1,38 @@
+<div
+  class="status-banner"
+  [ngClass]="['status-' + severity]"
+  *ngIf="!isHidden"
+  role="alert"
+  aria-live="polite"
+>
+  <div class="status-banner__container">
+    <div class="status-banner__content">
+      <div class="status-banner__icon-wrapper">
+        <div [ngClass]="'status-icon status-icon--' + severity"></div>
+      </div>
+
+      <div class="status-banner__message">
+        <h3 class="status-banner__title">{{ title }}</h3>
+        <p class="status-banner__description">{{ message }}</p>
+      </div>
+    </div>
+
+    <div class="status-banner__actions">
+      <button
+        *ngIf="actionText"
+        class="status-banner__button status-banner__button--action"
+        (click)="onActionClick()"
+      >
+        {{ actionText }}
+      </button>
+
+      <button
+        class="status-banner__button status-banner__button--close"
+        (click)="onClose()"
+        aria-label="Close notification"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+</div>

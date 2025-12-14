@@ -1,0 +1,93 @@
+<div class="energy-chart">
+  <div class="energy-chart__header">
+    <h3 class="energy-chart__title">{{ title }}</h3>
+    <div class="energy-chart__legend" *ngIf="showLegend">
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--color-success)"></div>
+        <span>Generated</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background: var(--color-primary-dark)"></div>
+        <span>Consumed</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="energy-chart__container" #chartContainer>
+    <svg class="energy-chart__svg" [attr.viewBox]="svgViewBox">
+      <!-- Grid lines -->
+      <g class="grid-lines">
+        <line
+          *ngFor="let line of gridLines"
+          [attr.x1]="margin.left"
+          [attr.x2]="width - margin.right"
+          [attr.y1]="line"
+          [attr.y2]="line"
+          class="grid-line"
+        />
+      </g>
+
+      <!-- Y-axis labels -->
+      <g class="y-axis-labels">
+        <text
+          *ngFor="let label of yAxisLabels; let i = index"
+          [attr.x]="margin.left - 10"
+          [attr.y]="height - margin.bottom - i * (chartHeight / 4)"
+          text-anchor="end"
+          alignment-baseline="middle"
+          class="y-axis-label"
+        >
+          {{ label }}
+        </text>
+      </g>
+
+      <!-- Curves -->
+      <path [attr.d]="generatedPath" class="curve curve--generated" />
+      <path [attr.d]="consumedPath" class="curve curve--consumed" />
+
+      <!-- Data points -->
+      <circle
+        *ngFor="let point of generatedPoints"
+        [attr.cx]="point.x"
+        [attr.cy]="point.y"
+        r="3"
+        class="data-point data-point--generated"
+      />
+      <circle
+        *ngFor="let point of consumedPoints"
+        [attr.cx]="point.x"
+        [attr.cy]="point.y"
+        r="3"
+        class="data-point data-point--consumed"
+      />
+
+      <!-- X-axis labels -->
+      <g class="x-axis-labels">
+        <text
+          *ngFor="let label of xAxisLabels; let i = index"
+          [attr.x]="margin.left + (i * chartWidth) / (xAxisLabels.length - 1)"
+          [attr.y]="height - 5"
+          text-anchor="middle"
+          class="x-axis-label"
+        >
+          {{ label }}
+        </text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="energy-chart__stats" *ngIf="showStats">
+    <div class="stat-item">
+      <span class="stat-label">Peak Generation</span>
+      <span class="stat-value">{{ peakGeneration }} kWh</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Avg Consumption</span>
+      <span class="stat-value">{{ avgConsumption }} kWh</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Surplus Energy</span>
+      <span class="stat-value text-success">{{ surplusEnergy }} kWh</span>
+    </div>
+  </div>
+</div>

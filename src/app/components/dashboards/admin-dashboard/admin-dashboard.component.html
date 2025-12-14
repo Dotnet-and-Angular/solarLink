@@ -1,0 +1,323 @@
+<!-- Header -->
+<header class="dashboard-header">
+  <div class="dashboard-header__container">
+    <div class="dashboard-header__title">
+      <h1>🏢 Admin Dashboard</h1>
+      <p class="dashboard-header__subtitle">System operations, client management & analytics</p>
+    </div>
+
+    <div class="dashboard-header__actions">
+      <button class="btn btn-primary btn-sm" (click)="onCreateSystem()" title="Create new system">
+        ➕ New System
+      </button>
+      <button class="btn btn-secondary btn-sm" (click)="onExportReport()" title="Export reports">
+        📥 Export
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Tab Navigation -->
+<nav class="dashboard-tabs">
+  <div class="tabs-container">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'operations'"
+      (click)="setActiveTab('operations')"
+    >
+      ⚙️ Operations
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'clients'"
+      (click)="setActiveTab('clients')"
+    >
+      👥 Clients
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'tickets'"
+      (click)="setActiveTab('tickets')"
+    >
+      🎫 Tickets
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'inventory'"
+      (click)="setActiveTab('inventory')"
+    >
+      📦 Inventory
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'reports'"
+      (click)="setActiveTab('reports')"
+    >
+      📊 Reports
+    </button>
+  </div>
+</nav>
+
+<!-- Tab Content -->
+<div class="admin-content">
+  <!-- Operations Tab -->
+  <section *ngIf="activeTab === 'operations'" class="tab-content">
+    <h2 class="section-title">Portfolio Overview</h2>
+
+    <!-- Portfolio KPIs -->
+    <div *ngIf="portfolioOverview" class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <h3>Total Systems</h3>
+          <span class="kpi-icon">☀️</span>
+        </div>
+        <div class="kpi-value">{{ portfolioOverview.totalSystems || 0 }}</div>
+        <p class="kpi-subtitle">Active installations</p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <h3>Total Capacity</h3>
+          <span class="kpi-icon">⚡</span>
+        </div>
+        <div class="kpi-value">
+          {{ portfolioOverview.totalCapacity || 0 | number : '1.1-1' }} kW
+        </div>
+        <p class="kpi-subtitle">Combined rating</p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <h3>YTD Production</h3>
+          <span class="kpi-icon">📈</span>
+        </div>
+        <div class="kpi-value">
+          {{ portfolioOverview.ytdProduction || 0 | number : '1.0-0' }} kWh
+        </div>
+        <p class="kpi-subtitle">Year-to-date</p>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <h3>Avg Efficiency</h3>
+          <span class="kpi-icon">✓</span>
+        </div>
+        <div class="kpi-value">
+          {{ portfolioOverview.averageEfficiency || 0 | number : '1.1-1' }}%
+        </div>
+        <p class="kpi-subtitle">System health</p>
+      </div>
+    </div>
+
+    <!-- System Status Distribution -->
+    <div class="operations-grid">
+      <div class="status-card">
+        <h3>System Status Distribution</h3>
+        <div class="status-list">
+          <div class="status-item">
+            <span class="status-label">🟢 Online</span>
+            <span class="status-count">{{ portfolioOverview?.systemsOnline || 0 }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">🟡 Degraded</span>
+            <span class="status-count">{{ portfolioOverview?.systemsDegraded || 0 }}</span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">🔴 Offline</span>
+            <span class="status-count">{{ portfolioOverview?.systemsOffline || 0 }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Performing Systems -->
+      <div class="status-card">
+        <h3>Top Performing Systems</h3>
+        <div class="system-ranking">
+          <div
+            *ngFor="let system of systemRanking | slice : 0 : 5; let i = index"
+            class="ranking-item"
+          >
+            <span class="rank-position">{{ i + 1 }}</span>
+            <span class="rank-name">{{ system?.name || 'System ' + (i + 1) }}</span>
+            <span class="rank-value">{{ system?.efficiency || 0 }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Tab -->
+  <section *ngIf="activeTab === 'clients'" class="tab-content">
+    <h2 class="section-title">Client Management</h2>
+
+    <div class="clients-grid">
+      <div *ngFor="let client of clients" class="client-card">
+        <div class="client-header">
+          <h3>{{ client.name }}</h3>
+          <span class="client-status" [ngClass]="'status-' + client.status">{{
+            client.status
+          }}</span>
+        </div>
+        <div class="client-details">
+          <div class="detail-item">
+            <label>Location:</label>
+            <span>{{ client.location }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Contact:</label>
+            <span>{{ client.contactEmail }}</span>
+          </div>
+          <div class="detail-item">
+            <label>Capacity:</label>
+            <span>{{ client.capacity }} kW</span>
+          </div>
+          <div class="detail-item">
+            <label>Systems:</label>
+            <span>{{ client.systemsCount }}</span>
+          </div>
+        </div>
+        <div class="client-actions">
+          <button class="btn btn-sm btn-secondary" (click)="onViewClientDetail(client)">
+            View Details
+          </button>
+          <button class="btn btn-sm btn-secondary" (click)="onManageUsers()">Manage Users</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tickets Tab -->
+  <section *ngIf="activeTab === 'tickets'" class="tab-content">
+    <h2 class="section-title">Service Tickets</h2>
+
+    <div class="tickets-list">
+      <div *ngFor="let ticket of ticketsData" class="ticket-item">
+        <div class="ticket-header">
+          <h3>{{ ticket.title }}</h3>
+          <div class="ticket-badges">
+            <span class="badge" [ngClass]="'priority-' + ticket.priority">{{
+              ticket.priority
+            }}</span>
+            <span class="badge" [ngClass]="'status-' + ticket.status">{{ ticket.status }}</span>
+          </div>
+        </div>
+        <div class="ticket-info">
+          <span>Client: {{ ticket.clientName }}</span>
+          <span>Created: {{ ticket.createdDate | date : 'short' }}</span>
+          <span>{{ ticket.description }}</span>
+        </div>
+        <div class="ticket-actions">
+          <button class="btn btn-sm btn-primary" (click)="onAssignTicket(ticket)">Assign</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inventory Tab -->
+  <section *ngIf="activeTab === 'inventory'" class="tab-content">
+    <h2 class="section-title">Inventory Management</h2>
+
+    <!-- Inventory Summary -->
+    <div *ngIf="inventoryStatus" class="inventory-summary">
+      <div class="summary-card">
+        <h3>Stock Status</h3>
+        <div class="summary-item">
+          <label>Low Stock Items:</label>
+          <span class="count-badge">{{ inventoryStatus.lowStockCount }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Adequate Stock:</label>
+          <span class="count-badge adequate">{{ inventoryStatus.adequateStockCount }}</span>
+        </div>
+        <div class="summary-item">
+          <label>Overstock Items:</label>
+          <span class="count-badge overstock">{{ inventoryStatus.overstockCount }}</span>
+        </div>
+      </div>
+
+      <!-- Reorder List -->
+      <div class="reorder-list">
+        <h3>Items Needing Reorder</h3>
+        <div class="inventory-table">
+          <div class="table-header">
+            <div class="col-item">Item</div>
+            <div class="col-qty">Current</div>
+            <div class="col-reorder">Reorder Point</div>
+            <div class="col-action">Action</div>
+          </div>
+          <div *ngFor="let item of inventoryStatus.reorderItems" class="table-row">
+            <div class="col-item">{{ item.name }}</div>
+            <div class="col-qty">{{ item.currentQty }}</div>
+            <div class="col-reorder">{{ item.reorderPoint }}</div>
+            <div class="col-action">
+              <button class="btn btn-sm btn-secondary" (click)="onManageInventory()">Manage</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reports Tab -->
+  <section *ngIf="activeTab === 'reports'" class="tab-content">
+    <h2 class="section-title">Analytics & Reports</h2>
+
+    <!-- Report Cards -->
+    <div class="reports-grid">
+      <div class="report-card">
+        <div class="report-icon">📊</div>
+        <h3>Performance Report</h3>
+        <p>System efficiency and production metrics</p>
+        <button class="btn btn-secondary btn-sm" (click)="onViewAnalytics()">View Report</button>
+      </div>
+
+      <div class="report-card">
+        <div class="report-icon">⚠️</div>
+        <h3>Fault Analysis</h3>
+        <p>System issues and maintenance recommendations</p>
+        <button class="btn btn-secondary btn-sm" (click)="onViewAnalytics()">View Report</button>
+      </div>
+
+      <div class="report-card">
+        <div class="report-icon">👨‍🔧</div>
+        <h3>Technician Performance</h3>
+        <p>Technician productivity and ratings</p>
+        <button class="btn btn-secondary btn-sm" (click)="onViewAnalytics()">View Report</button>
+      </div>
+
+      <div class="report-card">
+        <div class="report-icon">💰</div>
+        <h3>Financial Report</h3>
+        <p>Revenue and savings analysis</p>
+        <button class="btn btn-secondary btn-sm" (click)="onExportReport()">Export Report</button>
+      </div>
+    </div>
+
+    <!-- Fault Analysis Metrics -->
+    <div *ngIf="faultAnalysis" class="fault-analysis">
+      <h3>Fault Analysis Summary</h3>
+      <div class="fault-metrics">
+        <div class="metric-item">
+          <label>Total Faults:</label>
+          <span class="metric-value">{{ faultAnalysis.totalFaults }}</span>
+        </div>
+        <div class="metric-item">
+          <label>Resolved:</label>
+          <span class="metric-value resolved">{{ faultAnalysis.resolvedFaults }}</span>
+        </div>
+        <div class="metric-item">
+          <label>Pending:</label>
+          <span class="metric-value pending">{{ faultAnalysis.pendingFaults }}</span>
+        </div>
+        <div class="metric-item">
+          <label>MTTR:</label>
+          <span class="metric-value">{{ faultAnalysis.mttr | number : '1.1-1' }}h</span>
+        </div>
+        <div class="metric-item">
+          <label>MTTF:</label>
+          <span class="metric-value">{{ faultAnalysis.mttf | number : '1.1-1' }}h</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

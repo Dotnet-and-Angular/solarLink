@@ -1,0 +1,299 @@
+<!-- Header -->
+<header class="dashboard-header">
+  <div class="dashboard-header__container">
+    <div class="dashboard-header__title">
+      <h1>☀️ Customer Solar Dashboard</h1>
+      <p class="dashboard-header__subtitle">Real-time monitoring of your solar system</p>
+    </div>
+
+    <div class="dashboard-header__actions">
+      <button class="btn btn-secondary btn-sm" (click)="onExportData()" title="Export your data">
+        📥 Export
+      </button>
+      <button class="btn btn-secondary btn-sm" (click)="onContactSupport()" title="Contact support">
+        💬 Support
+      </button>
+    </div>
+
+    <div class="dashboard-header__status">
+      <div class="system-status" [ngClass]="'status-' + systemStatus">
+        <div class="status-indicator"></div>
+        <span>{{ systemStatus | uppercase }}</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Tab Navigation -->
+<nav class="dashboard-tabs">
+  <div class="tabs-container">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'overview'"
+      (click)="setActiveTab('overview')"
+    >
+      📊 Overview
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'production'"
+      (click)="setActiveTab('production')"
+    >
+      ⚡ Production
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'savings'"
+      (click)="setActiveTab('savings')"
+    >
+      💰 Savings
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'tickets'"
+      (click)="setActiveTab('tickets')"
+    >
+      🎫 Support
+    </button>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="dashboard-main">
+  <div class="dashboard-container">
+    <!-- Status Alert -->
+    <app-status-banner
+      *ngIf="showAlert && systemStatus === 'offline'"
+      severity="danger"
+      title="System Offline"
+      message="Your solar system is currently offline. Please check the connections and contact support if the issue persists."
+      actionText="Raise Support Ticket"
+      (actionClick)="onRaiseTicket()"
+      (closed)="showAlert = false"
+    ></app-status-banner>
+
+    <!-- Overview Tab -->
+    <section *ngIf="activeTab === 'overview'" class="tab-content">
+      <!-- KPI Cards Section -->
+      <section class="kpi-section">
+        <h2 class="section-title">Today's Performance</h2>
+
+        <div class="kpi-grid">
+          <app-kpi-card
+            title="Today's Generation"
+            subtitle="Real-time data"
+            [value]="kpi?.generatedKwh || 0 | number : '1.1-2'"
+            unit="kWh"
+            valueColor="success"
+            [changeValue]="3.5"
+            footerText="Peak: {{ kpi?.peakGenerationTime }}"
+            [isLoading]="isLoadingKPI"
+          ></app-kpi-card>
+
+          <app-kpi-card
+            title="Today's Savings"
+            subtitle="Estimated bill reduction"
+            [value]="kpi?.savingsINR || financialSummary?.annualSavings || 0 | number : '1.0-0'"
+            unit="₹"
+            valueColor="success"
+            [changeValue]="2.1"
+            footerText="vs grid cost"
+            [isLoading]="isLoadingKPI"
+          ></app-kpi-card>
+
+          <app-kpi-card
+            title="System Health"
+            subtitle="Overall efficiency"
+            [value]="95"
+            unit="%"
+            valueColor="success"
+            [changeValue]="0.5"
+            footerText="Optimal performance"
+            [isLoading]="isLoadingKPI"
+          ></app-kpi-card>
+
+          <app-kpi-card
+            title="Carbon Offset"
+            subtitle="This month"
+            [value]="2.1"
+            unit="Ton"
+            valueColor="success"
+            [changeValue]="0.3"
+            footerText="Like planting 35 trees"
+            [isLoading]="isLoadingKPI"
+          ></app-kpi-card>
+        </div>
+      </section>
+
+      <!-- Chart Section -->
+      <section class="chart-section">
+        <h2 class="section-title">Energy Generation Trend</h2>
+
+        <div class="chart-controls">
+          <div class="time-range-buttons">
+            <button
+              *ngFor="let range of timeRanges"
+              class="time-btn"
+              [class.active]="selectedTimeRange === range"
+              (click)="onTimeRangeChange(range)"
+            >
+              {{ range | uppercase }}
+            </button>
+          </div>
+        </div>
+
+        <app-energy-chart [energyData]="energyData"></app-energy-chart>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="quick-actions">
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="actions-grid">
+          <button class="action-card" (click)="onViewAnalytics()">
+            <span class="action-icon">📈</span>
+            <span class="action-title">View Analytics</span>
+            <span class="action-desc">Detailed performance reports</span>
+          </button>
+          <button class="action-card" (click)="onDownloadReport()">
+            <span class="action-icon">📄</span>
+            <span class="action-title">Download Report</span>
+            <span class="action-desc">PDF monthly summary</span>
+          </button>
+          <button class="action-card" (click)="onRaiseTicket()">
+            <span class="action-icon">🎫</span>
+            <span class="action-title">Raise Ticket</span>
+            <span class="action-desc">Request service support</span>
+          </button>
+          <button class="action-card" (click)="onContactSupport()">
+            <span class="action-icon">💬</span>
+            <span class="action-title">Contact Support</span>
+            <span class="action-desc">Chat with our team</span>
+          </button>
+        </div>
+      </section>
+    </section>
+
+    <!-- Production Tab -->
+    <section *ngIf="activeTab === 'production'" class="tab-content">
+      <h2 class="section-title">Energy Production Analysis</h2>
+      <div class="card">
+        <div class="card-content">
+          <div class="stat-row">
+            <div class="stat-item">
+              <label>Today's Production:</label>
+              <span class="stat-value">{{ kpi?.generatedKwh || 0 | number : '1.1-2' }} kWh</span>
+            </div>
+            <div class="stat-item">
+              <label>Peak Generation:</label>
+              <span class="stat-value">{{ kpi?.peakGenerationTime }}</span>
+            </div>
+            <div class="stat-item">
+              <label>System Efficiency:</label>
+              <span class="stat-value">94.5%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <app-energy-chart [energyData]="energyData"></app-energy-chart>
+    </section>
+
+    <!-- Savings Tab -->
+    <section *ngIf="activeTab === 'savings'" class="tab-content">
+      <h2 class="section-title">Savings & Financial Summary</h2>
+
+      <div *ngIf="financialSummary" class="financial-grid">
+        <div class="finance-card">
+          <h3>Annual Savings</h3>
+          <div class="finance-value">₹{{ financialSummary.financial?.annualSavings | number }}</div>
+          <p class="finance-subtitle">
+            Monthly: ₹{{ financialSummary.financial?.monthlySavings | number }}
+          </p>
+        </div>
+
+        <div class="finance-card">
+          <h3>Payback Period</h3>
+          <div class="finance-value">
+            {{ financialSummary.financial?.paybackYears | number : '1.1-1' }} years
+          </div>
+          <p class="finance-subtitle">{{ financialSummary.financial?.paybackMonths }} months</p>
+        </div>
+
+        <div class="finance-card">
+          <h3>25-Year ROI</h3>
+          <div class="finance-value">
+            {{ financialSummary.financial?.roi_percentage | number : '1.1-1' }}%
+          </div>
+          <p class="finance-subtitle">₹{{ financialSummary.financial?.roi_25_years | number }}</p>
+        </div>
+
+        <div class="finance-card">
+          <h3>Carbon Offset</h3>
+          <div class="finance-value">
+            {{ financialSummary.carbonOffset?.annual_ton_co2 | number : '1.1-1' }} Ton/year
+          </div>
+          <p class="finance-subtitle">
+            {{ financialSummary.carbonOffset?.equiv_trees }} trees equivalent
+          </p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">Bill History</h3>
+        <div class="bill-table">
+          <div class="table-header">
+            <span>Month</span>
+            <span>Before Solar</span>
+            <span>After Solar</span>
+            <span>Savings</span>
+          </div>
+          <div *ngFor="let bill of billHistory" class="table-row">
+            <span>{{ bill.month }}</span>
+            <span>₹{{ bill.beforeSolar | number }}</span>
+            <span>₹{{ bill.afterSolar | number }}</span>
+            <span class="savings">₹{{ bill.savings | number }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tickets Tab -->
+    <section *ngIf="activeTab === 'tickets'" class="tab-content">
+      <div class="tickets-header">
+        <h2 class="section-title">Support Tickets</h2>
+        <button class="btn btn-primary btn-sm" (click)="onRaiseTicket()">
+          + Create New Ticket
+        </button>
+      </div>
+
+      <div *ngIf="ticketsData && ticketsData.length > 0" class="tickets-list">
+        <div *ngFor="let ticket of ticketsData" class="ticket-card">
+          <div class="ticket-header">
+            <h4>{{ ticket.title }}</h4>
+            <span class="ticket-priority" [ngClass]="'priority-' + ticket.priority.toLowerCase()">
+              {{ ticket.priority }}
+            </span>
+          </div>
+          <div class="ticket-body">
+            <p><strong>Status:</strong> {{ ticket.status }}</p>
+            <p><strong>Created:</strong> {{ ticket.createdAt || 'N/A' }}</p>
+            <p>
+              <strong>Description:</strong> {{ ticket.description || 'No description provided' }}
+            </p>
+          </div>
+          <div class="ticket-footer">
+            <button class="btn btn-secondary btn-xs">View Details</button>
+            <button *ngIf="ticket.status !== 'resolved'" class="btn btn-secondary btn-xs">
+              Update
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!ticketsData || ticketsData.length === 0" class="empty-state">
+        <p>No support tickets yet</p>
+        <button class="btn btn-primary" (click)="onRaiseTicket()">Create Your First Ticket</button>
+      </div>
+    </section>
+  </div>
+</main>

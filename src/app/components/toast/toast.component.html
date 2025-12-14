@@ -1,0 +1,23 @@
+<div class="toast-container">
+  <div
+    *ngFor="let toast of toasts"
+    [attr.data-type]="toast.type"
+    class="toast"
+    [class]="'toast-' + toast.type"
+    role="alert"
+  >
+    <div class="toast-content">
+      <span class="toast-icon">{{ getIconClass(toast.type) }}</span>
+      <span class="toast-message" [innerHTML]="toast.message"></span>
+    </div>
+    <button
+      *ngIf="toast.dismissible"
+      type="button"
+      class="toast-close"
+      (click)="dismiss(toast.id)"
+      aria-label="Close notification"
+    >
+      ×
+    </button>
+  </div>
+</div>

@@ -1,0 +1,317 @@
+<app-toast></app-toast>
+
+<div class="login-wrapper">
+  <!-- Left Side - Brand & Features -->
+  <div class="login-left">
+    <div class="left-content">
+      <!-- Logo Header -->
+      <div class="logo-header">
+        <div class="logo-mark">☀️</div>
+        <div class="logo-name">SolarLink</div>
+      </div>
+
+      <!-- Main Title -->
+      <div class="left-main">
+        <h1 class="main-title">Solar Link<br />Platform</h1>
+        <p class="main-description">Complete solar energy management system</p>
+      </div>
+
+      <!-- Features List -->
+      <div class="features-list">
+        <div class="feature-row">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-content">
+            <h4>Real-Time Monitoring</h4>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">💰</div>
+          <div class="feature-content">
+            <h4>ROI Analytics</h4>
+          </div>
+        </div>
+
+        <div class="feature-row">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-content">
+            <h4>Environmental Impact</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Credentials - At Bottom of Left Side -->
+      <div class="left-bottom">
+        <div class="credentials-label">Test Credentials:</div>
+        <div class="credentials-mini">
+          <div
+            *ngFor="let cred of testCredentials"
+            class="cred-mini-item"
+            (click)="useTestCredential(cred)"
+            title="{{ cred.email }}"
+          >
+            <span class="cred-mini-badge" [ngSwitch]="cred.role.toLowerCase()">
+              <span *ngSwitchCase="'customer'">👤</span>
+              <span *ngSwitchCase="'admin'">👑</span>
+              <span *ngSwitchCase="'technician'">🔧</span>
+              <span *ngSwitchCase="'installer'">🏗️</span>
+            </span>
+            <span class="cred-mini-text">{{ cred.role }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side - Login Form -->
+  <div class="login-right">
+    <div class="login-card">
+      <!-- Logo -->
+      <div class="card-logo">
+        <div class="logo-circle">
+          <div class="logo-icon">☀️</div>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div class="card-header">
+        <h1 class="card-title">Welcome back</h1>
+        <p class="card-subtitle">Please enter your details to sign in.</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <!-- Error Alert -->
+        <div *ngIf="error" class="alert alert-error">
+          <svg
+            class="alert-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+          >
+            <path d="M12 8v4m0 4v.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
+          </svg>
+          {{ error }}
+        </div>
+
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-wrapper">
+            <input
+              type="email"
+              class="form-input"
+              id="email"
+              formControlName="email"
+              placeholder="merveavsar@mail.com"
+              [class.is-invalid]="submitted && f['email'].errors"
+              autocomplete="email"
+            />
+            <button type="button" class="input-action-btn" (click)="onSubmit()" tabindex="-1">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+          <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+            <span *ngIf="f['email'].errors['required']">Email is required</span>
+            <span *ngIf="f['email'].errors['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-wrapper">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-input"
+              id="password"
+              formControlName="password"
+              placeholder="••••••••"
+              [class.is-invalid]="submitted && f['password'].errors"
+              autocomplete="current-password"
+            />
+            <button
+              type="button"
+              class="input-action-btn"
+              (click)="togglePasswordVisibility()"
+              tabindex="-1"
+            >
+              <svg
+                *ngIf="!showPassword"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+              <svg
+                *ngIf="showPassword"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                />
+                <line x1="1" y1="1" x2="23" y2="23" />
+              </svg>
+            </button>
+          </div>
+          <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+            <span *ngIf="f['password'].errors['required']">Password is required</span>
+          </div>
+        </div>
+
+        <!-- Remember Me -->
+        <div class="form-group checkbox-group">
+          <input
+            type="checkbox"
+            class="form-checkbox"
+            id="rememberMe"
+            formControlName="rememberMe"
+          />
+          <label class="checkbox-label" for="rememberMe">Remember me</label>
+        </div>
+
+        <!-- Sign In Button -->
+        <button type="submit" class="btn-signin" [disabled]="loading">
+          <span *ngIf="!loading">Sign In</span>
+          <span *ngIf="loading" class="spinner">
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+            <span class="spinner-dot"></span>
+          </span>
+        </button>
+      </form>
+
+      <!-- OR Divider -->
+      <div class="or-divider">
+        <span>OR</span>
+      </div>
+
+      <!-- Social Login -->
+      <div class="social-login">
+        <button type="button" class="social-btn google-btn" title="Continue with Google">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <text
+              x="50%"
+              y="50%"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              font-size="14"
+              fill="currentColor"
+              font-weight="bold"
+            >
+              G
+            </text>
+          </svg>
+          <span>Continue with Google</span>
+          <svg
+            class="arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <button type="button" class="social-btn github-btn" title="Continue with GitHub">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+            <text
+              x="50%"
+              y="50%"
+              dominant-baseline="middle"
+              text-anchor="middle"
+              font-size="14"
+              fill="currentColor"
+              font-weight="bold"
+            >
+              ⚙
+            </text>
+          </svg>
+          <span>Continue with GitHub</span>
+          <svg
+            class="arrow"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Sign Up Link -->
+      <div class="card-footer">
+        <p>Don't have an account? <a href="#" class="signup-link">Create Account</a></p>
+      </div>
+
+      <!-- Test Credentials (collapsible) -->
+      <div class="test-credentials-section">
+        <button
+          type="button"
+          class="credentials-toggle"
+          (click)="toggleTestCredentials()"
+          title="View test credentials"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </button>
+        <div class="credentials-list" *ngIf="showTestCredentials">
+          <div
+            *ngFor="let cred of testCredentials"
+            class="cred-item"
+            (click)="useTestCredential(cred)"
+          >
+            <span class="cred-badge" [ngSwitch]="cred.role.toLowerCase()">
+              <span *ngSwitchCase="'customer'">👤</span>
+              <span *ngSwitchCase="'admin'">👑</span>
+              <span *ngSwitchCase="'technician'">🔧</span>
+              <span *ngSwitchCase="'installer'">🏗️</span>
+            </span>
+            <div class="cred-info">
+              <div class="cred-role">{{ cred.role }}</div>
+              <div class="cred-email">{{ cred.email }}</div>
+            </div>
+            <svg
+              class="cred-arrow"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

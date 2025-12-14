@@ -1,0 +1,51 @@
+<nav class="main-navigation">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <span class="logo-icon">☀️</span>
+      <span class="logo-text">SolarLink</span>
+    </div>
+
+    <ul class="nav-links" *ngIf="isAuthenticated$ | async">
+      <li>
+        <a
+          routerLink="/customer"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+          <span class="nav-icon">👤</span>
+          <span class="nav-text">Customer</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/admin"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-link"
+        >
+          <span class="nav-icon">🛠️</span>
+          <span class="nav-text">Admin</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-user-section" *ngIf="isAuthenticated$ | async">
+      <div class="user-info">
+        <div class="user-avatar">{{ (currentUser$ | async)?.name?.charAt(0) || 'U' }}</div>
+        <div class="user-details">
+          <div class="user-name">{{ (currentUser$ | async)?.name }}</div>
+          <div class="user-role" [ngClass]="getRoleColor((currentUser$ | async)?.role || '')">
+            {{ (currentUser$ | async)?.role | uppercase }}
+          </div>
+        </div>
+      </div>
+      <button class="logout-btn" (click)="logout()" title="Logout">
+        <span class="logout-icon">🚪</span>
+        <span class="logout-text">Logout</span>
+      </button>
+    </div>
+
+    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/login" class="login-link"> Login </a>
+  </div>
+</nav>

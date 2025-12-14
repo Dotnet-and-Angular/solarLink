@@ -1,0 +1,27 @@
+<div class="kpi-card" [class.loading]="isLoading">
+  <div class="kpi-card__header">
+    <h3 class="kpi-card__title">{{ title }}</h3>
+    <div class="kpi-card__subtitle" *ngIf="subtitle">
+      {{ subtitle }}
+    </div>
+  </div>
+
+  <div class="kpi-card__content">
+    <div class="kpi-card__value" [ngClass]="'text-' + valueColor">
+      {{ value }}
+      <span class="kpi-card__unit" *ngIf="unit">{{ unit }}</span>
+    </div>
+
+    <div class="kpi-card__change" *ngIf="changeValue !== null" [ngClass]="changeType">
+      <span class="kpi-card__change-icon">
+        <i *ngIf="changeType === 'positive'" class="icon-arrow-up"></i>
+        <i *ngIf="changeType === 'negative'" class="icon-arrow-down"></i>
+      </span>
+      <span class="kpi-card__change-value">{{ Math.abs(changeValue) }}%</span>
+    </div>
+  </div>
+
+  <div class="kpi-card__footer" *ngIf="footerText">
+    <p class="kpi-card__footer-text">{{ footerText }}</p>
+  </div>
+</div>

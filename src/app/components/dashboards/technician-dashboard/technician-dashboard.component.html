@@ -1,0 +1,263 @@
+<!-- Header -->
+<header class="dashboard-header">
+  <div class="dashboard-header__container">
+    <div class="dashboard-header__title">
+      <h1>👨‍🔧 Technician Dashboard</h1>
+      <p class="dashboard-header__subtitle">Your daily schedule and job assignments</p>
+    </div>
+
+    <div class="dashboard-header__actions">
+      <button class="btn btn-primary btn-sm" (click)="onRequestTraining()" title="Request training">
+        📚 Training
+      </button>
+      <button
+        class="btn btn-secondary btn-sm"
+        (click)="onViewPerformanceReport()"
+        title="View performance"
+      >
+        📊 Performance
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- KPI Section -->
+<div class="kpi-section">
+  <div class="kpi-stat">
+    <div class="kpi-stat__value">{{ todayJobs }}</div>
+    <div class="kpi-stat__label">Today's Jobs</div>
+  </div>
+  <div class="kpi-stat">
+    <div class="kpi-stat__value">{{ completedJobs }}</div>
+    <div class="kpi-stat__label">Completed</div>
+  </div>
+  <div class="kpi-stat">
+    <div class="kpi-stat__value">₹{{ totalRevenue | number }}</div>
+    <div class="kpi-stat__label">Revenue Generated</div>
+  </div>
+  <div class="kpi-stat">
+    <div class="kpi-stat__value">{{ customerRating }}/5</div>
+    <div class="kpi-stat__label">Customer Rating</div>
+  </div>
+</div>
+
+<!-- Tab Navigation -->
+<nav class="dashboard-tabs">
+  <div class="tabs-container">
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'schedule'"
+      (click)="setActiveTab('schedule')"
+    >
+      📅 Schedule
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'jobs'" (click)="setActiveTab('jobs')">
+      🎯 Jobs
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'performance'"
+      (click)="setActiveTab('performance')"
+    >
+      📈 Performance
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'clients'"
+      (click)="setActiveTab('clients')"
+    >
+      👥 Clients
+    </button>
+  </div>
+</nav>
+
+<!-- Tab Content -->
+<div class="tech-content">
+  <!-- Schedule Tab -->
+  <section *ngIf="activeTab === 'schedule'" class="tab-content">
+    <h2 class="section-title">Today's Schedule</h2>
+
+    <div class="schedule-list">
+      <div *ngFor="let slot of todaySchedule" class="schedule-item">
+        <div class="schedule-time">
+          <span class="time-start">{{ slot.startTime }}</span>
+          <span class="time-duration">{{ slot.duration }}h</span>
+        </div>
+        <div class="schedule-details">
+          <h3>{{ slot.jobTitle }}</h3>
+          <p class="location">📍 {{ slot.location }}</p>
+          <p class="customer">👤 {{ slot.customerName }}</p>
+          <p class="estimated">⏱️ Est. Arrival: {{ slot.estimatedArrival }}</p>
+        </div>
+        <div class="schedule-actions">
+          <button class="btn btn-sm btn-primary" (click)="onNavigateToSite(slot)">Navigate</button>
+          <button class="btn btn-sm btn-secondary" (click)="onCallCustomer(slot)">Call</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jobs Tab -->
+  <section *ngIf="activeTab === 'jobs'" class="tab-content">
+    <h2 class="section-title">Assigned Jobs</h2>
+
+    <div class="jobs-list">
+      <div *ngFor="let job of assignedJobs" class="job-card">
+        <div class="job-header">
+          <h3>{{ job.title }}</h3>
+          <span class="job-status" [ngClass]="'status-' + job.status">
+            {{ job.status | uppercase }}
+          </span>
+        </div>
+        <div class="job-info">
+          <div class="info-item">
+            <label>System ID:</label>
+            <span>{{ job.systemId }}</span>
+          </div>
+          <div class="info-item">
+            <label>Priority:</label>
+            <span class="priority-badge" [ngClass]="'priority-' + job.priority">
+              {{ job.priority }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Scheduled Date:</label>
+            <span>{{ job.scheduledDate | date : 'short' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Est. Duration:</label>
+            <span>{{ job.estimatedDuration }} hours</span>
+          </div>
+        </div>
+        <p class="job-description">{{ job.description }}</p>
+        <div class="job-actions">
+          <button
+            class="btn btn-sm btn-primary"
+            (click)="onStartJob(job)"
+            [disabled]="job.status !== 'assigned'"
+          >
+            Start Job
+          </button>
+          <button
+            class="btn btn-sm btn-success"
+            (click)="onCompleteJob(job)"
+            [disabled]="job.status !== 'in-progress'"
+          >
+            Complete
+          </button>
+          <button class="btn btn-sm btn-secondary" (click)="onDownloadJobDetails(job)">
+            Details
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Tab -->
+  <section *ngIf="activeTab === 'performance'" class="tab-content">
+    <h2 class="section-title">Performance Metrics</h2>
+
+    <div *ngIf="performanceMetrics" class="performance-grid">
+      <div class="perf-card">
+        <h3>This Month</h3>
+        <div class="perf-item">
+          <label>Jobs Completed</label>
+          <span class="perf-value">{{ performanceMetrics.monthlyJobsCompleted }}</span>
+        </div>
+        <div class="perf-item">
+          <label>Customer Satisfaction</label>
+          <span class="perf-value">{{ performanceMetrics.monthlySatisfaction || 96 }}%</span>
+        </div>
+        <div class="perf-item">
+          <label>On-Time Completion</label>
+          <span class="perf-value">{{ performanceMetrics.onTimeCompletion || 98 }}%</span>
+        </div>
+      </div>
+
+      <div class="perf-card">
+        <h3>This Year</h3>
+        <div class="perf-item">
+          <label>Total Jobs</label>
+          <span class="perf-value">{{ performanceMetrics.yearlyJobsCompleted || 250 }}</span>
+        </div>
+        <div class="perf-item">
+          <label>Avg Rating</label>
+          <span class="perf-value">{{ performanceMetrics.averageRating || 4.7 }}/5</span>
+        </div>
+        <div class="perf-item">
+          <label>Revenue Generated</label>
+          <span class="perf-value">₹{{ performanceMetrics.yearlyRevenue | number }}</span>
+        </div>
+      </div>
+
+      <div class="perf-card">
+        <h3>Skills & Certifications</h3>
+        <div class="skill-item">
+          <span>PV System Installation</span>
+          <span class="badge">✓</span>
+        </div>
+        <div class="skill-item">
+          <span>Maintenance & Troubleshooting</span>
+          <span class="badge">✓</span>
+        </div>
+        <div class="skill-item">
+          <span>Battery Storage Systems</span>
+          <span class="badge">✓</span>
+        </div>
+        <div class="skill-item">
+          <span>Smart Inverter Configuration</span>
+          <span class="badge">✓</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clients Tab -->
+  <section *ngIf="activeTab === 'clients'" class="tab-content">
+    <h2 class="section-title">Assigned Client Sites</h2>
+
+    <div class="clients-grid">
+      <div *ngFor="let client of clientSites" class="client-site-card">
+        <div class="site-header">
+          <h3>{{ client.customerName }}</h3>
+          <span class="site-type">{{ client.systemType }}</span>
+        </div>
+        <div class="site-details">
+          <div class="detail">
+            <span class="label">Location:</span>
+            <span>{{ client.location }}</span>
+          </div>
+          <div class="detail">
+            <span class="label">System Capacity:</span>
+            <span>{{ client.capacity }} kW</span>
+          </div>
+          <div class="detail">
+            <span class="label">Last Service:</span>
+            <span>{{ client.lastServiceDate | date : 'short' }}</span>
+          </div>
+          <div class="detail">
+            <span class="label">Next Service Due:</span>
+            <span [ngClass]="{ overdue: client.isOverdue }">
+              {{ client.nextServiceDate | date : 'short' }}
+            </span>
+          </div>
+          <div class="detail">
+            <span class="label">Contact:</span>
+            <span>{{ client.phoneNumber }}</span>
+          </div>
+        </div>
+        <div class="site-actions">
+          <button class="btn btn-sm btn-primary" (click)="onNavigateToSite(client)">
+            Navigate
+          </button>
+          <button class="btn btn-sm btn-secondary" (click)="onCallCustomer(client)">
+            Call Customer
+          </button>
+          <button class="btn btn-sm btn-secondary" (click)="onUpdateJobStatus(client)">
+            Schedule Service
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
