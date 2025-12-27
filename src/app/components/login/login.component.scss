@@ -1,64 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Outfit', sans-serif;
-}
-
-:host {
-  display: block;
-}
-
-.page-container {
-  min-height: 100vh;
-  background: #f8faff; /* Light background for the outer page */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  padding: 20px;
-}
-
-/* Background Blobs */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  z-index: 0;
-}
-
-.purple-blob {
-  top: -100px;
-  right: -100px;
-  width: 500px;
-  height: 500px;
-  background: rgba(139, 92, 246, 0.15);
-}
-
-.blue-blob {
-  bottom: -100px;
-  left: -100px;
-  width: 400px;
-  height: 400px;
-  background: rgba(59, 130, 246, 0.15);
-}
-
 /* Main Card */
 .main-card {
   width: 100%;
-  max-width: 1400px;
-  height: 800px; /* Fixed height for the design look */
+  min-height: 100vh; /* Allow scrolling */
   background: #2E2365; /* Dark Purple */
-  border-radius: 40px;
   position: relative;
   z-index: 10;
-  box-shadow: 0 20px 50px rgba(46, 35, 101, 0.3);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  /* Removed overflow: hidden to allow scroll */
+  border-radius: 0;
 }
 
 /* Header */
@@ -68,7 +18,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 60px;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
 .brand {
@@ -170,43 +120,46 @@
   flex: 1;
   display: flex;
   position: relative;
+  min-height: 0; /* Fix for flexbox scrolling */
 }
 
 .illustration-section {
-  flex: 1.2;
+  flex: 1.5; /* Takes up more space on the left (~60%) */
   position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between; /* Space out content */
+  min-height: 600px; /* Minimum height for illustration */
+  overflow: hidden; 
+  background-color: white;
 }
 
 .illustration-container {
   width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 1; /* Take available space */
   position: relative;
   
   img {
-    max-width: 90%;
-    max-height: 80%;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the left panel */
+    filter: none; /* Remove filter */
+    position: absolute;
+    top: 0; left: 0;
   }
 }
 
 /* Features Overlay */
 .features-overlay {
     position: absolute;
-    top: 20%;
+    top: 50%;
     left: 10%;
+    transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     gap: 20px;
     z-index: 20;
-    pointer-events: none; /* Let clicks pass through */
+    pointer-events: none;
 }
 
 .feature-card {
@@ -255,22 +208,131 @@
     100% { transform: translateY(0px); }
 }
 
-.login-section {
-  flex: 1;
+/* Widgets Container - FLEX POSITIONING */
+.widgets-container {
+    position: relative;
+    margin-top: auto; /* Push to bottom */
+    width: 100%;
+    display: flex;
+    align-items: stretch; /* Stretch children to same height */
+    gap: 0; 
+    padding-left: 0; 
+    z-index: 20;
+    pointer-events: none;
+}
+
+/* Chat Widget - The Unique Shape */
+.chat-widget {
+    pointer-events: auto;
+    background: white;
+    display: flex;
+    padding: 20px; 
+    /* width: 400px; -- REMOVED */
+    flex: 1; /* Expand to fill space */
+    min-height: 100px; 
+    height: auto; 
+}
+
+.dummy-widget {
+  pointer-events: auto;
+  background: #2E2365;
+  border-bottom-left-radius: 35px; 
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.avatar-placeholder {
+  width: 48px;
+  height: 48px;
+  background: #EFEEFF;
+  color: #7C6AF0;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-right: 80px;
+  font-size: 24px;
+}
+
+.chat-content {
+  flex: 1;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.chat-name {
+  font-weight: 700;
+  color: #2E2365;
+  font-size: 18px;
+}
+
+.chat-time {
+  font-size: 11px;
+  color: #9CA3AF;
+}
+
+.credentials-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.cred-pill {
+    font-size: 12px;
+    padding: 6px 12px;
+    background: #F3F4F6;
+    color: #4B5563;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    
+    &:hover {
+        background: #EFEEFF;
+        color: #7C6AF0;
+        border-color: #C4B5FD;
+    }
+}
+
+.chat-message {
+    font-size: 14px;
+    color: #ffffff; /* White text for contrast on purple bg */
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+/* Login Section */
+.login-section {
+  flex: 1; 
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  justify-content: center; 
+  padding-right: 0;
+  position: relative;
+  z-index: 10;
+  min-height: 100%; 
+  overflow-y: auto; /* Scroll if content is too tall */
 }
 
 .login-box {
   background: white;
   width: 480px;
+  max-width: 90%; 
   padding: 50px;
   border-radius: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
+  margin: auto; /* Center in flex container */
+  margin-top: 40px; 
+  margin-bottom: 40px;
 }
 
 .login-header {
@@ -414,98 +476,21 @@
   }
 }
 
-/* Footer Area with Chat Widget */
-.footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  pointer-events: none; /* Let clicks pass through empty space */
-}
-
-/* Chat Widget - The Unique Shape */
-.chat-widget {
-  pointer-events: auto;
-  background: white;
-  width: 440px; /* Slightly wider for credentials */
-  min-height: 140px;
-  border-top-right-radius: 60px; /* Big curve */
-  padding: 30px;
-  padding-left: 50px;
-  display: flex;
-  gap: 20px;
-  position: relative;
-}
-
-.avatar-placeholder {
-  width: 48px;
-  height: 48px;
-  background: #EFEEFF;
-  color: #7C6AF0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-}
-
-.chat-content {
-  flex: 1;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  align-items: center;
-}
-
-.chat-name {
-  font-weight: 700;
-  color: #2E2365;
-  font-size: 18px;
-}
-
-.chat-time {
-  font-size: 11px;
-  color: #9CA3AF;
-}
-
-.credentials-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.cred-pill {
-    font-size: 12px;
-    padding: 6px 12px;
-    background: #F3F4F6;
-    color: #4B5563;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
-    border: 1px solid transparent;
-    
-    &:hover {
-        background: #EFEEFF;
-        color: #7C6AF0;
-        border-color: #C4B5FD;
-    }
-}
-
-/* Footer Links */
+/* Footer Links - FLEX POSITIONING */
 .footer-links {
+  position: relative;
+  width: 100%;
   pointer-events: auto;
-  padding: 0 60px 40px 0;
+  padding: 30px 60px;
   display: flex;
-  gap: 60px;
-  color: rgba(255, 255, 255, 0.4);
+  justify-content: space-between; 
+  align-items: center;
+  color: #ffffff; 
   font-size: 12px;
+  font-weight: 500;
+  z-index: 50;
+  margin-top: auto; /* Push to bottom */
+  flex-shrink: 0;
 }
 
 .socials {
@@ -513,11 +498,12 @@
   gap: 12px;
   
   a {
-    color: rgba(255, 255, 255, 0.6);
+    color: #ffffff; 
     text-decoration: none;
+    opacity: 0.8;
     
     &:hover {
-      color: white;
+      opacity: 1;
     }
   }
 }
@@ -527,11 +513,12 @@
   gap: 8px;
   
   a {
-    color: rgba(255, 255, 255, 0.6);
+    color: #ffffff; 
     text-decoration: none;
+    opacity: 0.8;
     
     &:hover {
-      color: white;
+      opacity: 1;
     }
   }
 }
@@ -550,4 +537,3 @@
     width: 300px;
   }
 }
-
