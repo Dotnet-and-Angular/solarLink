@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -13,50 +13,49 @@
 
 .page-container {
   min-height: 100vh;
-  background: #2E2365; /* Match card background */
+  background: #f8faff; /* Light background for the outer page */
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 0; /* Remove padding */
+  padding: 20px;
 }
 
-/* Background Blobs - adjusting for subtle atmosphere */
+/* Background Blobs */
 .blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
   z-index: 0;
-  opacity: 0.6;
 }
 
 .purple-blob {
   top: -100px;
   right: -100px;
-  width: 600px;
-  height: 600px;
-  background: rgba(139, 92, 246, 0.1);
+  width: 500px;
+  height: 500px;
+  background: rgba(139, 92, 246, 0.15);
 }
 
 .blue-blob {
   bottom: -100px;
   left: -100px;
-  width: 500px;
-  height: 500px;
-  background: rgba(59, 130, 246, 0.1);
+  width: 400px;
+  height: 400px;
+  background: rgba(59, 130, 246, 0.15);
 }
 
-/* Main Card (Now Fullscreen) */
+/* Main Card */
 .main-card {
   width: 100%;
-  max-width: none;
-  min-height: 100vh;
-  background: #2E2365;
-  border-radius: 0; /* Remove radius for fullscreen */
+  max-width: 1400px;
+  height: 800px; /* Fixed height for the design look */
+  background: #2E2365; /* Dark Purple */
+  border-radius: 40px;
   position: relative;
   z-index: 10;
-  box-shadow: none;
+  box-shadow: 0 20px 50px rgba(46, 35, 101, 0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -64,7 +63,7 @@
 
 /* Header */
 .header {
-  height: 100px;
+  height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -72,7 +71,6 @@
   flex-shrink: 0;
 }
 
-/* ... (Keep Brand/Nav styles mostly same, maybe slight tweaks) ... */
 .brand {
   display: flex;
   align-items: center;
@@ -83,13 +81,19 @@
   width: 32px;
   height: 32px;
   color: white;
-  svg { width: 100%; height: 100%; }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .logo-mark {
+      font-size: 24px;
+  }
 }
 
 .brand-name {
   color: white;
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.5px;
 }
 
@@ -99,12 +103,15 @@
   gap: 32px;
 
   a {
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     transition: color 0.3s;
-    &:hover { color: white; }
+
+    &:hover {
+      color: white;
+    }
   }
 }
 
@@ -120,14 +127,18 @@
   gap: 6px;
   cursor: pointer;
   margin-right: 10px;
-  .icon { font-size: 14px; }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .btn {
   padding: 10px 24px;
   border-radius: 12px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -135,9 +146,12 @@
 .btn-ghost {
   background: transparent;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   margin-right: 12px;
-  &:hover { border-color: white; }
+
+  &:hover {
+    border-color: white;
+  }
 }
 
 .btn-primary {
@@ -145,7 +159,10 @@
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(124, 106, 240, 0.3);
-  &:hover { background: #6D5CE0; }
+
+  &:hover {
+    background: #6D5CE0;
+  }
 }
 
 /* Content Area */
@@ -156,7 +173,7 @@
 }
 
 .illustration-section {
-  flex: 1.3;
+  flex: 1.2;
   position: relative;
   display: flex;
   align-items: center;
@@ -170,19 +187,77 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   
   img {
-    max-width: 95%; /* Make illustration slightly bigger */
-    max-height: 85%;
+    max-width: 90%;
+    max-height: 80%;
     object-fit: contain;
-    /* Removed drop-shadow on SVG to keep it flat as per design */
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
   }
+}
+
+/* Features Overlay */
+.features-overlay {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 20;
+    pointer-events: none; /* Let clicks pass through */
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 20px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    width: fit-content;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    animation: float 6s ease-in-out infinite;
+    
+    .f-icon {
+        font-size: 20px;
+        background: rgba(255,255,255,0.2);
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    h4 {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+    }
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 1s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
 }
 
 .login-section {
   flex: 1;
   display: flex;
-  flex-direction: column; /* Stack box and creds */
   align-items: center;
   justify-content: center;
   padding-right: 80px;
@@ -192,7 +267,7 @@
   background: white;
   width: 480px;
   padding: 50px;
-  border-radius: 40px; /* More rounded */
+  border-radius: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
@@ -202,12 +277,10 @@
   margin-bottom: 40px;
 
   h1 {
-    font-size: 36px; /* Larger title */
-    color: #2E2365; /* Dark purple title */
-    font-family: 'DM Serif Display', serif;
-    font-weight: 400;
+    font-size: 32px;
+    color: #1a1a1a;
+    font-weight: 700;
     margin-bottom: 8px;
-    letter-spacing: 0.5px;
   }
 
   p {
@@ -225,20 +298,17 @@
   
   input {
     width: 100%;
-    padding: 18px 24px;
-    padding-right: 45px;
-    border: 1px solid transparent; /* No border by default in design? Or very light */
+    padding: 16px 20px;
+    padding-right: 45px; /* Space for icon */
     border: 1px solid #F3F4F6;
     border-radius: 16px;
-    background: #FAFAFA; /* Very light grey/white */
+    background: #FAFAFA;
     font-size: 15px;
-    color: #2E2365; /* Dark text */
-    font-weight: 600; /* Bold text for inputs */
+    color: #374151;
     transition: all 0.2s;
 
     &::placeholder {
       color: #9CA3AF;
-      font-weight: 400;
     }
 
     &:focus {
@@ -251,14 +321,23 @@
 
   .input-icon {
     position: absolute;
-    right: 24px;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     color: #9CA3AF;
     font-size: 16px;
     opacity: 0.7;
-    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
+}
+
+.invalid-feedback {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 6px;
+    margin-left: 4px;
 }
 
 .form-footer {
@@ -270,7 +349,10 @@
   color: #9CA3AF;
   margin-bottom: 24px;
   
-  a { color: #7C6AF0; text-decoration: underline; }
+  a {
+    color: #7C6AF0;
+    text-decoration: underline;
+  }
 }
 
 .actions-row {
@@ -281,23 +363,23 @@
 
 .btn-submit {
   flex: 1;
-  padding: 18px;
+  padding: 16px;
   background: #7C6AF0;
   color: white;
   border: none;
   border-radius: 16px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-left: 28px;
-  padding-right: 28px;
+  padding-left: 24px;
+  padding-right: 24px;
   max-width: 180px;
-  box-shadow: 0 10px 25px rgba(124, 106, 240, 0.4);
+  box-shadow: 0 10px 20px rgba(124, 106, 240, 0.3);
   transition: transform 0.2s;
-  
+
   &:hover {
     transform: translateY(-2px);
     background: #6D5CE0;
@@ -308,20 +390,12 @@
   color: #6B7280;
   font-size: 13px;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 500;
   margin-left: 20px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  
-  /* Add lock icon via pseudo or just text */
-  &::before {
-    content: '🔒';
-    font-size: 10px;
-    opacity: 0.6;
-  }
 
-  &:hover { color: #374151; }
+  &:hover {
+    color: #374151;
+  }
 }
 
 .create-account {
@@ -335,7 +409,7 @@
   a {
     color: #7C6AF0;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: 600;
     margin-left: 4px;
   }
 }
@@ -349,91 +423,33 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  pointer-events: none;
+  pointer-events: none; /* Let clicks pass through empty space */
 }
 
-/* Chat Widget Refined */
+/* Chat Widget - The Unique Shape */
 .chat-widget {
   pointer-events: auto;
   background: white;
-  width: 380px;
+  width: 440px; /* Slightly wider for credentials */
   min-height: 140px;
-  /* Bottom Left matches the container radius (now 0 for fullscreen) */
-  border-bottom-left-radius: 0; 
-  /* Standard Convex Curve matching the design "Folder Tab" look */
-  border-top-right-radius: 100px; 
-  /* Other corners square */
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 0; 
-  
+  border-top-right-radius: 60px; /* Big curve */
   padding: 30px;
   padding-left: 50px;
   display: flex;
   gap: 20px;
   position: relative;
-  z-index: 20;
-
-  /* Removed inverted curve pseudo-element as it was likely incorrect */
 }
 
 .avatar-placeholder {
-  width: 56px;
-  height: 56px;
-  min-width: 56px;
-  background: #E5E7EB;
+  width: 48px;
+  height: 48px;
+  background: #EFEEFF;
+  color: #7C6AF0;
   border-radius: 50%;
-  background-image: url('https://i.pravatar.cc/150?img=32'); 
-  background-size: cover;
-  border: 4px solid white; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* ... (Keep Check content styles) ... */
-
-/* Test Credentials Section (New) */
-.credentials-display {
-  margin-top: 30px;
-  width: 100%;
-  max-width: 480px; /* Match login box width */
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 20px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  
-  h3 {
-    color: white;
-    font-size: 14px;
-    margin-bottom: 12px;
-    opacity: 0.8;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
-  }
-}
-
-.creds-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 10px;
-}
-
-.cred-pill {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-align: center;
-  border: 1px solid transparent;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.4);
-    transform: translateY(-1px);
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
 }
 
 .chat-content {
@@ -443,15 +459,14 @@
 .chat-header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   align-items: center;
 }
 
 .chat-name {
   font-weight: 700;
   color: #2E2365;
-  font-size: 20px;
-  font-family: 'DM Serif Display', serif; /* Serif for name too */
+  font-size: 18px;
 }
 
 .chat-time {
@@ -459,40 +474,80 @@
   color: #9CA3AF;
 }
 
-.chat-message {
-  font-size: 14px;
-  color: #6B7280;
-  line-height: 1.5;
+.credentials-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.cred-pill {
+    font-size: 12px;
+    padding: 6px 12px;
+    background: #F3F4F6;
+    color: #4B5563;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    
+    &:hover {
+        background: #EFEEFF;
+        color: #7C6AF0;
+        border-color: #C4B5FD;
+    }
 }
 
 /* Footer Links */
 .footer-links {
   pointer-events: auto;
-  padding: 0 60px 50px 0; /* Align with padding of card */
+  padding: 0 60px 40px 0;
   display: flex;
-  gap: 40px;
-  color: rgba(255, 255, 255, 0.5);
+  gap: 60px;
+  color: rgba(255, 255, 255, 0.4);
   font-size: 12px;
-  align-items: center;
 }
 
 .socials {
   display: flex;
-  gap: 20px;
-  a { color: rgba(255, 255, 255, 0.7); text-decoration: none; &:hover { color: white; } }
-  .separator { opacity: 0.3; }
+  gap: 12px;
+  
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    
+    &:hover {
+      color: white;
+    }
+  }
 }
 
 .copyright {
   display: flex;
-  gap: 12px;
-  a { color: rgba(255, 255, 255, 0.7); text-decoration: none; &:hover { color: white; } }
+  gap: 8px;
+  
+  a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    
+    &:hover {
+      color: white;
+    }
+  }
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .illustration-section { display: none; }
-  .login-section { padding-right: 0; }
-  .chat-widget { width: 300px; }
+  .illustration-section {
+    display: none;
+  }
+  
+  .login-section {
+    padding-right: 0;
+  }
+  
+  .chat-widget {
+    width: 300px;
+  }
 }
 
