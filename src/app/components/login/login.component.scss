@@ -208,38 +208,44 @@
     100% { transform: translateY(0px); }
 }
 
-/* Widgets Container - FLEX POSITIONING */
+/* Widgets Container */
 .widgets-container {
     position: relative;
     margin-top: auto; /* Push to bottom */
     width: 100%;
+    background: transparent; /* Remove unified background */
+    border-radius: 0; 
     display: flex;
-    align-items: stretch; /* Stretch children to same height */
-    gap: 0; 
-    padding-left: 0; 
+    align-items: stretch;
+    justify-content: space-between;
     z-index: 20;
-    pointer-events: none;
-}
-
-/* Chat Widget - The Unique Shape */
-.chat-widget {
     pointer-events: auto;
-    background: white;
-    display: flex;
-    padding: 20px; 
-    /* width: 400px; -- REMOVED */
-    flex: 1; /* Expand to fill space */
-    min-height: 100px; 
-    height: auto; 
 }
 
+/* Chat Widget - Left Half content */
+.chat-widget {
+    flex: 1; /* Split half */
+    background: white; 
+    border-radius: 0 35px 0 0; /* Top-Right Radius only */
+    display: flex;
+    padding: 30px; 
+    padding-left: 40px;
+    min-height: 140px; 
+    height: auto; 
+    color: #2E2365; /* Dark text */
+}
+
+/* Dummy Widget - Right Half content */
 .dummy-widget {
-  pointer-events: auto;
-  background: #2E2365;
-  border-bottom-left-radius: 35px; 
+  flex: 1; /* Split half */
+  background: #2E2365; /* Purple background */
+  border-radius: 0 0 0 35px; /* Bottom-Left Radius only */
+  border-left: none;
   display: flex;
   gap: 20px;
+  padding: 30px;
   position: relative;
+  color: white; /* White text */
 }
 
 .avatar-placeholder {
@@ -252,10 +258,14 @@
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  flex-shrink: 0;
 }
 
 .chat-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .chat-header {
