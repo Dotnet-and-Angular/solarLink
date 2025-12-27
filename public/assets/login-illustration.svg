@@ -1,0 +1,120 @@
+<svg width="600" height="500" viewBox="0 0 600 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Style for animations -->
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .turbine-blades {
+      transform-origin: 300px 180px; /* Adjust based on turbine center */
+      animation: spin 8s linear infinite;
+    }
+    .turbine-blades-2 {
+      transform-origin: 450px 220px;
+      animation: spin 10s linear infinite reverse;
+    }
+    .turbine-blades-3 {
+      transform-origin: 150px 250px;
+      animation: spin 9s linear infinite;
+    }
+  </style>
+
+  <!-- Background elements/Blobs can be handled by CSS, this is the illustration content -->
+  
+  <!-- Back Turbine -->
+  <g transform="translate(-50, -20)">
+      <rect x="295" y="180" width="10" height="300" fill="#4C3A9E" />
+      <g class="turbine-blades" style="transform-origin: 300px 180px;">
+        <path d="M300 180 L290 100 Q300 80 310 100 Z" fill="#7C6BF2" /> <!-- Top -->
+        <path d="M300 180 L370 220 Q380 230 360 235 Z" fill="#7C6BF2" /> <!-- Right -->
+        <path d="M300 180 L230 220 Q220 230 240 235 Z" fill="#7C6BF2" /> <!-- Left -->
+        <circle cx="300" cy="180" r="8" fill="#A78BFA"/>
+      </g>
+  </g>
+
+  <!-- Right Turbine -->
+  <g transform="translate(0, 0)">
+      <rect x="445" y="220" width="8" height="260" fill="#5B4BA4" />
+      <g class="turbine-blades-2" style="transform-origin: 450px 220px;">
+        <path d="M450 220 L442 150 Q450 130 458 150 Z" fill="#8B5CF6" />
+        <path d="M450 220 L510 255 Q520 265 500 270 Z" fill="#8B5CF6" />
+        <path d="M450 220 L390 255 Q380 265 400 270 Z" fill="#8B5CF6" />
+        <circle cx="450" cy="220" r="6" fill="#C4B5FD"/>
+      </g>
+  </g>
+
+  <!-- Left Turbine (Small) -->
+  <g transform="translate(0, 0) opacity: 0.8">
+      <rect x="145" y="250" width="8" height="230" fill="#3B2B7A" />
+      <g class="turbine-blades-3" style="transform-origin: 150px 250px;">
+          <path d="M150 250 L144 190 Q150 170 156 190 Z" fill="#6D5CE0" />
+          <path d="M150 250 L200 280 Q210 290 190 295 Z" fill="#6D5CE0" />
+          <path d="M150 250 L100 280 Q90 290 110 295 Z" fill="#6D5CE0" />
+          <circle cx="150" cy="250" r="5" fill="#A78BFA"/>
+      </g>
+  </g>
+
+  <!-- Panels -->
+  <!-- Back Panel -->
+  <g transform="translate(260, 230)">
+    <path d="M0 20 L120 0 L150 80 L30 100 Z" fill="#4C3A9E" stroke="#7C6BF2" stroke-width="2"/>
+    <!-- Grid lines -->
+    <path d="M40 14 L50 85" stroke="#7C6BF2" stroke-width="1"/>
+    <path d="M80 7 L90 90" stroke="#7C6BF2" stroke-width="1"/>
+    <path d="M6 35 L125 15" stroke="#7C6BF2" stroke-width="1"/>
+    <path d="M15 60 L135 40" stroke="#7C6BF2" stroke-width="1"/>
+    <path d="M25 85 L145 65" stroke="#7C6BF2" stroke-width="1"/>
+  </g>
+
+  <!-- Front Main Panel -->
+  <g transform="translate(100, 300)">
+    <rect x="0" y="0" width="220" height="140" fill="#2E2365" rx="4" />
+    <rect x="5" y="5" width="210" height="130" fill="#5B4BA4" opacity="0.5"/>
+    <!-- Cells -->
+    <g stroke="#8B5CF6" stroke-width="1">
+       <line x1="5" y1="37" x2="215" y2="37" />
+       <line x1="5" y1="70" x2="215" y2="70" />
+       <line x1="5" y1="103" x2="215" y2="103" />
+       <line x1="57" y1="5" x2="57" y2="135" />
+       <line x1="110" y1="5" x2="110" y2="135" />
+       <line x1="163" y1="5" x2="163" y2="135" />
+    </g>
+    <!-- Stand -->
+    <rect x="100" y="140" width="20" height="60" fill="#4C3A9E"/>
+    <rect x="80" y="200" width="60" height="10" rx="5" fill="#4C3A9E"/>
+  </g>
+
+  <!-- Characters -->
+  <!-- Worker on Ladder (Abstract) -->
+  <g transform="translate(280, 280)">
+      <!-- Ladder -->
+      <path d="M10 0 L10 120" stroke="#A78BFA" stroke-width="3"/>
+      <path d="M40 0 L40 120" stroke="#A78BFA" stroke-width="3"/>
+      <line x1="10" y1="20" x2="40" y2="20" stroke="#A78BFA" stroke-width="2"/>
+      <line x1="10" y1="50" x2="40" y2="50" stroke="#A78BFA" stroke-width="2"/>
+      <line x1="10" y1="80" x2="40" y2="80" stroke="#A78BFA" stroke-width="2"/>
+      
+      <!-- Person -->
+      <circle cx="25" cy="40" r="8" fill="#FF8A65"/> <!-- Head -->
+      <path d="M25 48 L25 80 L15 110" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/> <!-- Body/Leg -->
+      <path d="M25 48 L25 80 L35 110" stroke="#6366F1" stroke-width="8" stroke-linecap="round"/>
+      <path d="M25 55 L45 50" stroke="#FF8A65" stroke-width="4" stroke-linecap="round"/> <!-- Arm -->
+  </g>
+
+  <!-- Worker at Console (Abstract) -->
+  <g transform="translate(380, 320)">
+      <!-- Console -->
+      <path d="M0 50 L0 100 L80 100 L80 50 L60 30 L20 30 Z" fill="#DDD6FE"/>
+      <!-- Screen -->
+      <rect x="10" y="60" width="30" height="20" fill="#2E2365"/>
+      <!-- Person -->
+      <path d="M100 100 L100 50 L90 40" stroke="#6366F1" stroke-width="10" stroke-linecap="round"/> <!-- Standing -->
+      <circle cx="90" cy="30" r="8" fill="#FF8A65"/>
+      <path d="M100 55 L70 60" stroke="#FF8A65" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Cloud Shapes for aesthetic -->
+  <path d="M50 50 Q70 30 90 50 T130 50 T150 70 L50 70 Z" fill="#FFFFFF" opacity="0.1"/>
+  <path d="M450 80 Q470 60 490 80 T530 80 T550 100 L450 100 Z" fill="#FFFFFF" opacity="0.1"/>
+
+</svg>

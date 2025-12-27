@@ -11,7 +11,7 @@ import { ToastComponent } from '../toast/toast.component';
   standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ToastComponent],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
