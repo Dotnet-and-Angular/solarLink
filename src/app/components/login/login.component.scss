@@ -239,7 +239,7 @@
 .dummy-widget {
   flex: 1; /* Split half */
   background: #2E2365; /* Purple background */
-  border-radius: 0 0 0 35px; /* Bottom-Left Radius only */
+  border-radius:  35px 0 0 35px; /* Bottom-Left Radius only */
   border-left: none;
   display: flex;
   gap: 20px;
@@ -340,9 +340,6 @@
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  margin: auto; /* Center in flex container */
-  margin-top: 40px; 
-  margin-bottom: 40px;
 }
 
 .login-header {
@@ -491,7 +488,7 @@
   position: relative;
   width: 100%;
   pointer-events: auto;
-  padding: 30px 60px;
+  padding: 30px 10px;
   display: flex;
   justify-content: space-between; 
   align-items: center;
