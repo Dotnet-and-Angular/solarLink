@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
   error = '';
   showPassword = false;
   showTestCredentials = true;
+  isDarkMode = false;
 
   testCredentials = [
     { email: 'admin@example.com', password: 'admin123', role: 'Admin' },
@@ -132,5 +133,9 @@ export class LoginComponent implements OnInit {
 
   toggleTestCredentials(): void {
     this.showTestCredentials = !this.showTestCredentials;
+  }
+
+  toggleTheme(): void {
+    this.isDarkMode = !this.isDarkMode;
   }
 }
