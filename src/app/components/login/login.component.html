@@ -59,9 +59,7 @@
 
                 <!-- Test Credentials Widget (Developer Mode) -->
                 <div class="dummy-widget">
-                    <div class="avatar">
-                        <div class="avatar-placeholder">�</div>
-                    </div>
+
                     <div class="chat-content">
                         <div class="chat-header">
                             <span class="chat-name">Test Access</span>
@@ -96,6 +94,12 @@
 
 
 
+                @if (error) {
+                <div class="alert-error">
+                    {{ error }}
+                </div>
+                }
+
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form-new">
 
                     <!-- Customer ID -->
@@ -107,9 +111,10 @@
                         <input type="email" id="email" formControlName="email" class="form-control-new">
                         <a href="#" class="helper-link">Get Customer ID</a>
 
-                        @if (submitted && f['email'].errors) {
+                        @if ((f['email'].touched || submitted) && f['email'].errors) {
                         <div class="invalid-feedback">
                             @if (f['email'].errors['required']) { <span>ID is required</span> }
+                            @if (f['email'].errors['email']) { <span>Invalid email format</span> }
                         </div>
                         }
                     </div>
@@ -128,7 +133,7 @@
                             </span>
                         </div>
                         <!-- Error moved below input -->
-                        @if (submitted && f['password'].errors) {
+                        @if ((f['password'].touched || submitted) && f['password'].errors) {
                         <div class="invalid-feedback">
                             @if (f['password'].errors['required']) { <span>Password is required</span> }
                         </div>

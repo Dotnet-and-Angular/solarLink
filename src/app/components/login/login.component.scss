@@ -16,6 +16,21 @@
     --toggle-hover-bg: #E5E7EB;
     --toggle-hover-text: #111827;
 
+    /* Inverted Card Theme (Light Page -> Dark Card) */
+    --bg-card: #082537;
+    --text-card-main: #FFFFFF;
+    --text-card-muted: rgba(255, 255, 255, 0.7);
+    /* Inputs always white background for clarity, text black */
+    --input-bg: #FFFFFF;
+    --input-text: #000000;
+    
+    /* Accents for Dark Card */
+    --accent-color: #60A5FA; /* Light Blue for Dark BG */
+    --badge-bg: #FFFFFF;
+    --badge-text: #082537;
+    --btn-bg: #3B82F6; /* Brighter Blue for Dark BG */
+    --btn-text: #FFFFFF;
+
     .dark-theme {
         /* Dark Theme Overrides */
         --bg-main: #0A3D62; /* Brand Primary Dark */
@@ -32,18 +47,35 @@
         --toggle-border: transparent;
         --toggle-hover-bg: rgba(255, 255, 255, 0.2);
         --toggle-hover-text: #FFFFFF;
+
+        /* Inverted Card Theme (Dark Page -> Light Card) */
+        --bg-card: #FFFFFF;
+        --text-card-main: #111827;
+        --text-card-muted: #6B7280;
+        
+        /* Accents for Light Card */
+        --accent-color: #1B5A96; /* Original Brand Blue */
+        --badge-bg: #082537;
+        --badge-text: #FFFFFF;
+        --btn-bg: #1B5A96;
+        --btn-text: #FFFFFF;
     }
 }
+
+/* ... existing code ... */
+
+
 
 /* Main Card */
 .main-card {
   width: 100%;
-  min-height: 100vh;
+  height: 100vh; /* Fixed height for internal scrolling */
   background: var(--bg-main);
   position: relative;
   z-index: 10;
   display: flex;
   flex-direction: column;
+  overflow: hidden; /* Prevent body scroll */
   border-radius: 0;
 }
 
@@ -275,13 +307,13 @@
     flex: 0 0 auto;
     width: auto;
     min-width: 380px;
-    background: white; 
+    background: var(--bg-card); 
     border-radius: 0 30px 0 0; /* Rounded Top-Right Tip */
     display: flex;
     padding: 12px 72px; /* Padding compensates for skew */
     height: auto; 
     gap: 15px;
-    color: var(--color-primary-dark, #0A3D62); 
+    color: var(--text-card-main); 
     
     /* 45 Degree Skew as requested */
     -webkit-transform: skewX(45deg);
@@ -305,7 +337,7 @@
   gap: 20px;
   padding: 0 15px 15px 0px; /* Offset from the skewed white card */
   align-items: center;
-  color: white; 
+  color: var(--text-primary); 
   z-index: 5;
 }
 
@@ -317,10 +349,10 @@
 .avatar-placeholder {
   width: 48px;
   height: 48px;
-  background: var(--color-background-tertiary, #F0F0F0);
-  color: var(--color-primary-light, #1B5A96);
+  background: var(--bg-header);
+  color: #1B5A96;
   border-radius: 50%;
-  border: 1px solid var(--color-primary-lighter, #2E7DAF);
+  border: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -350,7 +382,8 @@
 
 .chat-time {
   font-size: 11px;
-  color: #9CA3AF;
+  color: inherit;
+  opacity: 0.6;
 }
 
 .credentials-row {
@@ -362,18 +395,18 @@
 .cred-pill {
     font-size: 12px;
     padding: 6px 12px;
-    background: #F3F4F6;
-    color: #4B5563;
+    background: var(--bg-header);
+    color: var(--text-secondary);
     border-radius: 20px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.2s;
-    border: 1px solid transparent;
+    border: 1px solid var(--border-color);
     
     &:hover {
-        background: #EFEEFF;
-        color: var(--color-primary-light, #1B5A96);
-        border-color: var(--color-primary-lighter, #2E7DAF);
+        background: var(--border-color);
+        color: var(--text-primary);
+        border-color: #1B5A96;
     }
 }
 
@@ -392,20 +425,20 @@
   display: flex;
   flex-direction: column; 
   align-items: center;
-  justify-content: center; 
+  /* justify-content: center; Removed to allow safe scrolling */
   padding-right: 0;
   position: relative;
   z-index: 10;
-  min-height: 100%; 
-  overflow-y: auto; /* Scroll if content is too tall */
+  height: 100%; /* Fill available space */
+  overflow-y: auto; /* Independent Scroll */
 }
 
 /* Login Box Container */
 .login-box {
-  background: white;
+  background: var(--bg-card);
   width: 500px;
   max-width: 95%; 
-  padding: 40px;
+  padding:20px 40px;
   border-radius: 12px; /* Subtler radius */
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); /* Softer shadow */
   display: flex;
@@ -413,7 +446,7 @@
   margin: auto; 
   margin-top: 20px; 
   margin-bottom: 20px;
-  color: #333;
+  color: var(--text-card-main);
 }
 
 /* Header Sections */
@@ -423,7 +456,7 @@
     h3 {
         font-size: 24px;
         font-weight: 700;
-        color: #000;
+        color: var(--text-card-main);
         margin-bottom: 8px;
     }
 }
@@ -433,7 +466,7 @@
     align-items: center;
     gap: 8px;
     font-size: 11px;
-    color: #666;
+    color: var(--text-card-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -443,17 +476,18 @@
         align-items: center;
         gap: 6px;
     }
-
+    
+    /* ... logos ... */
     .solar-logo {
-        background: #082537;
-        color: white;
+        background: var(--badge-bg);
+        color: var(--badge-text);
         padding: 2px 6px;
         border-radius: 4px;
         font-weight: 700;
     }
 
     .tech-logo {
-        color: #1B5A96;
+        color: var(--accent-color);
         font-weight: 800;
     }
 }
@@ -481,13 +515,14 @@
     label {
         font-size: 14px;
         font-weight: 600;
-        color: #000;
+        color: var(--text-card-main);
     }
 
     .icon-link {
         text-decoration: none;
         font-size: 16px;
         opacity: 0.6;
+        color: var(--text-card-main);
         &:hover { opacity: 1; }
     }
 }
@@ -498,13 +533,13 @@
     border: 1px solid #D1D5DB;
     border-radius: 4px; /* Slightly rectangular */
     font-size: 15px;
-    color: #000;
+    color: var(--input-text);
     transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fff;
+    background: var(--input-bg);
 
     &:focus {
         outline: none;
-        border-color: #1B5A96;
+        border-color: var(--accent-color);
         box-shadow: 0 0 0 3px rgba(27, 90, 150, 0.1);
     }
 }
@@ -522,14 +557,14 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
-    color: #666;
+    color: #666; /* Keep gray for input icon */
     font-size: 16px;
     user-select: none;
 }
 
 .helper-link {
     font-size: 13px;
-    color: #1B5A96;
+    color: var(--accent-color);
     text-decoration: none;
     font-weight: 500;
     margin-top: 2px;
@@ -541,6 +576,17 @@
     color: #DC2626;
     font-size: 12px;
     margin-top: 2px;
+}
+
+/* Alert Error */
+.alert-error {
+  color: #DC2626;
+  background: #FEF2F2;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 15px;
+  border: 1px solid #FECACA;
 }
 
 /* Security Widget */
@@ -593,8 +639,8 @@
 
 .btn-login-new {
     width: 100%;
-    background: #1B5A96; /* SolarLink Blue */
-    color: white;
+    background: var(--btn-bg); 
+    color: var(--btn-text);
     border: none;
     padding: 12px;
     font-size: 16px;
@@ -604,20 +650,20 @@
     transition: background 0.2s;
 
     &:hover {
-        background: #154a7e;
+        opacity: 0.9;
     }
 }
 
 .register-row {
     font-size: 13px;
-    color: #555;
+    color: var(--text-card-muted);
     text-align: left; /* Align left per reference usually, or center */
     margin-top: 15px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--border-color);
     padding-top: 15px;
 
     a {
-        color: #1B5A96;
+        color: var(--accent-color);
         text-decoration: none;
         font-weight: 600;
         margin-left: 5px;
