@@ -1,4 +1,5 @@
-<!-- Solar Link Dashboard Application -->
 <app-toast></app-toast>
-<app-navigation *ngIf="showNavigation"></app-navigation>
+@if (showNavigation) {
+<app-navigation></app-navigation>
+}
 <router-outlet></router-outlet>

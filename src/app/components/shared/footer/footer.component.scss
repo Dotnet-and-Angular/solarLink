@@ -1,0 +1,50 @@
+/* Footer styles moved from login.component.scss */
+.footer-links {
+  background-color: var(--bg-header);
+  position: relative;
+  width: 100%;
+  pointer-events: auto;
+  padding: 15px 20px;
+  display: grid;
+  gap: 12px;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 50;
+  margin-top: auto; /* Push to bottom */
+  flex-shrink: 0;
+  border-top: 1px solid var(--border-color);
+}
+
+.socials {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+
+  a {
+    color: var(--text-muted);
+    text-decoration: none;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.copyright {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+
+  a {
+    color: var(--text-muted);
+    text-decoration: none;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

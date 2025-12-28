@@ -1,192 +1,141 @@
-<app-toast></app-toast>
-
 <div class="main-card" [class.dark-theme]="isDarkMode">
-    <!-- Header: Logo & Navigation -->
-    <header class="header">
-        <div class="brand">
-            <div class="brand-logo">
-                <div class="logo-mark">☀️</div>
+  <app-header [isDarkMode]="isDarkMode" (toggleTheme)="toggleTheme()"></app-header>
+
+  <div class="content-wrapper">
+    <!-- Left Section: Illustration & Features -->
+    <div class="illustration-section">
+      <div class="illustration-container">
+        <img src="assets/illustration.png" alt="Sustainable Energy" class="illustration-image" />
+
+        <!-- Features Overlay Removed as requested -->
+      </div>
+
+      <div class="widgets-container">
+        <!-- Test Credentials Widget (repurposed Chat Widget) -->
+        <!-- Chat Widget (Support) -->
+        <div class="chat-widget">
+          <div class="avatar">
+            <div class="avatar-placeholder">�</div>
+          </div>
+          <div class="chat-content">
+            <div class="chat-header">
+              <span class="chat-name">Support</span>
+              <span class="chat-time">Online</span>
             </div>
-            <span class="brand-name">SolarLink</span>
+            <div class="chat-message">Need help? Ask us anything.</div>
+          </div>
         </div>
 
-        <nav class="nav-links">
-            <a href="#">Marketplace</a>
-            <a href="#">Drops</a>
-            <a href="#">Brands</a>
-            <button class="theme-toggle" (click)="toggleTheme()">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-                {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
-            </button>
-            <button class="btn btn-ghost">Log In</button>
-            <button class="btn btn-primary">Sign Up</button>
-        </nav>
-    </header>
-
-    <div class="content-wrapper">
-        <!-- Left Section: Illustration & Features -->
-        <div class="illustration-section">
-
-            <div class="illustration-container">
-
-                <img src="assets/illustration.png" alt="Sustainable Energy" class="illustration-image">
-
-                <!-- Features Overlay Removed as requested -->
-
-
+        <!-- Test Credentials Widget (Developer Mode) -->
+        <div class="dummy-widget">
+          <div class="chat-content">
+            <div class="chat-header">
+              <span class="chat-name">Test Access</span>
+              <span class="chat-time">Developer Mode</span>
             </div>
-
-            <div class="widgets-container">
-                <!-- Test Credentials Widget (repurposed Chat Widget) -->
-                <!-- Chat Widget (Support) -->
-                <div class="chat-widget">
-                    <div class="avatar">
-                        <div class="avatar-placeholder">�</div>
-                    </div>
-                    <div class="chat-content">
-                        <div class="chat-header">
-                            <span class="chat-name">Support</span>
-                            <span class="chat-time">Online</span>
-                        </div>
-                        <div class="chat-message">
-                            Need help? Ask us anything.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Test Credentials Widget (Developer Mode) -->
-                <div class="dummy-widget">
-
-                    <div class="chat-content">
-                        <div class="chat-header">
-                            <span class="chat-name">Test Access</span>
-                            <span class="chat-time">Developer Mode</span>
-                        </div>
-                        <!-- Interactive Test Credentials -->
-                        <div class="credentials-row">
-                            @for (cred of testCredentials; track cred.email) {
-                            <span class="cred-pill" (click)="useTestCredential(cred)" [title]="cred.email">
-                                {{cred.role}}
-                            </span>
-                            }
-                        </div>
-                    </div>
-                </div>
+            <!-- Interactive Test Credentials -->
+            <div class="credentials-row">
+              @for (cred of testCredentials; track cred.email) {
+              <span class="cred-pill" (click)="useTestCredential(cred)" [title]="cred.email">
+                {{ cred.role }}
+              </span>
+              }
             </div>
+          </div>
         </div>
-
-        <!-- Right Section: Login Form -->
-        <div class="login-section">
-            <div class="login-box">
-                <div class="login-header-new">
-                    <h3>Welcome to SolarLink</h3>
-                    <div class="brand-sub">
-                        <span class="small-text">MADE DIGITAL BY</span>
-                        <div class="brand-logos">
-                            <span class="solar-logo">☀️ SolarLink</span>
-                            <span class="tech-logo">⚡ Tech</span>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                @if (error) {
-                <div class="alert-error">
-                    {{ error }}
-                </div>
-                }
-
-                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form-new">
-
-                    <!-- Customer ID -->
-                    <div class="form-group-new">
-                        <div class="label-row">
-                            <label for="email">Customer ID/User ID</label>
-                            <a href="#" class="icon-link">⌨️</a>
-                        </div>
-                        <input type="email" id="email" formControlName="email" class="form-control-new">
-                        <a href="#" class="helper-link">Get Customer ID</a>
-
-                        @if ((f['email'].touched || submitted) && f['email'].errors) {
-                        <div class="invalid-feedback">
-                            @if (f['email'].errors['required']) { <span>ID is required</span> }
-                            @if (f['email'].errors['email']) { <span>Invalid email format</span> }
-                        </div>
-                        }
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group-new">
-                        <div class="label-row">
-                            <label for="password">Password</label>
-                            <a href="#" class="icon-link">⌨️</a>
-                        </div>
-                        <div class="input-wrapper">
-                            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
-                                class="form-control-new">
-                            <span class="eye-icon" (click)="togglePasswordVisibility()">
-                                {{ showPassword ? '👁️' : 'Ø' }}
-                            </span>
-                        </div>
-                        <!-- Error moved below input -->
-                        @if ((f['password'].touched || submitted) && f['password'].errors) {
-                        <div class="invalid-feedback">
-                            @if (f['password'].errors['required']) { <span>Password is required</span> }
-                        </div>
-                        }
-                        <a href="#" class="helper-link">Set/Reset Password</a>
-                    </div>
-
-                    <!-- Security Widget -->
-                    <div class="security-widget">
-                        <div class="sec-text">
-                            You're just as secure with <strong>SolarLink Security!</strong>
-                            <ul class="sec-list">
-                                <li>✓ Zero compromise</li>
-                                <li>✓ Pro-Grade security</li>
-                                <li>✓ Trusted by 97% global banks</li>
-                            </ul>
-                        </div>
-                        <div class="sec-badge">
-                            🛡️ <strong>SolarSecure</strong>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="form-actions">
-                        <button type="submit" class="btn-login-new">
-                            Login
-                        </button>
-                    </div>
-
-                    <div class="register-row">
-                        <span>Not registered for SolarLink?</span>
-                        <a href="#">Register Now</a>
-                    </div>
-
-                </form>
-            </div>
-
-            <!-- Footer Links moved to Right Section -->
-            <div class="footer-links">
-                <div class="socials">
-                    <a href="#">Twitter</a>
-                    <span class="separator">-</span>
-                    <a href="#">Instagram</a>
-                </div>
-                <div class="copyright">
-                    <span>©2025 All Rights Reserved SolarLink.</span>
-                    <a href="#">Privacy</a>
-                    <span>:</span>
-                    <a href="#">Terms of Service.</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
+    <!-- Right Section: Login Form -->
+    <div class="login-section">
+      <div class="login-box">
+        <div class="login-header-new">
+          <h3>Welcome to SolarLink</h3>
+          <div class="brand-sub">
+            <span class="small-text">MADE DIGITAL BY</span>
+            <div class="brand-logos">
+              <span class="solar-logo">☀️ SolarLink</span>
+              <span class="tech-logo">⚡ Tech</span>
+            </div>
+          </div>
+        </div>
 
+        @if (error) {
+        <div class="alert-error">
+          {{ error }}
+        </div>
+        }
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form-new">
+          <!-- Customer ID -->
+          <div class="form-group-new">
+            <div class="label-row">
+              <label for="email">Customer ID/User ID</label>
+              <a href="#" class="icon-link">⌨️</a>
+            </div>
+            <input type="email" id="email" formControlName="email" class="form-control-new" />
+            <a href="#" class="helper-link">Get Customer ID</a>
+
+            @if ((f['email'].touched || submitted) && f['email'].errors) {
+            <div class="invalid-feedback">
+              @if (f['email'].errors['required']) { <span>ID is required</span> } @if
+              (f['email'].errors['email']) { <span>Invalid email format</span> }
+            </div>
+            }
+          </div>
+
+          <!-- Password -->
+          <div class="form-group-new">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <a href="#" class="icon-link">⌨️</a>
+            </div>
+            <div class="input-wrapper">
+              <input
+                [type]="showPassword ? 'text' : 'password'"
+                id="password"
+                formControlName="password"
+                class="form-control-new"
+              />
+              <span class="eye-icon" (click)="togglePasswordVisibility()">
+                {{ showPassword ? '👁️' : 'Ø' }}
+              </span>
+            </div>
+            <!-- Error moved below input -->
+            @if ((f['password'].touched || submitted) && f['password'].errors) {
+            <div class="invalid-feedback">
+              @if (f['password'].errors['required']) { <span>Password is required</span> }
+            </div>
+            }
+            <a href="#" class="helper-link">Set/Reset Password</a>
+          </div>
+
+          <!-- Security Widget -->
+          <div class="security-widget">
+            <div class="sec-text">
+              You're just as secure with <strong>SolarLink Security!</strong>
+              <ul class="sec-list">
+                <li>✓ Zero compromise</li>
+                <li>✓ Pro-Grade security</li>
+                <li>✓ Trusted by 97% global banks</li>
+              </ul>
+            </div>
+            <div class="sec-badge">🛡️ <strong>SolarSecure</strong></div>
+          </div>
+
+          <!-- Actions -->
+          <div class="form-actions">
+            <button type="submit" class="btn-login-new">Login</button>
+          </div>
+
+          <div class="register-row">
+            <span>Not registered for SolarLink?</span>
+            <a href="#">Register Now</a>
+          </div>
+        </form>
+      </div>
+
+      <div class="login-footer"><app-footer></app-footer></div>
+    </div>
+  </div>
 </div>
