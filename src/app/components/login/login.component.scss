@@ -9,15 +9,17 @@
   flex-direction: column;
   /* Removed overflow: hidden to allow scroll */
   border-radius: 0;
+  // background-color: #082537;
 }
 
 /* Header */
 .header {
-  height: 90px;
+  background-color: #082537; /* Darker Header Background */
+  height: 70px; /* Reduced height */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 60px;
+  padding: 0 40px;
   flex-shrink: 0; /* Prevent header from shrinking */
 }
 
@@ -124,14 +126,16 @@
 }
 
 .illustration-section {
-  flex: 1.5; /* Takes up more space on the left (~60%) */
+  flex: 0 0 66.666%;
+  width: 66.666%;
+  max-width: 66.666%;
   position: relative;
   display: flex;
   flex-direction: column; /* Stack children vertically */
   justify-content: space-between; /* Space out content */
-  min-height: 600px; /* Minimum height for illustration */
+  min-height: 500px; /* Reduced minimum height */
   overflow: hidden; 
-  background-color: white;
+  background-color: transparent;
 }
 
 .illustration-container {
@@ -213,39 +217,58 @@
     position: relative;
     margin-top: auto; /* Push to bottom */
     width: 100%;
-    background: transparent; /* Remove unified background */
-    border-radius: 0; 
+    background: transparent; 
     display: flex;
-    align-items: stretch;
-    justify-content: space-between;
+    align-items: flex-end; /* Align to bottom */
+    justify-content: flex-start;
     z-index: 20;
     pointer-events: auto;
+    overflow: visible;
+    padding-bottom: 0; /* Removed extra space */
 }
 
-/* Chat Widget - Left Half content */
+/* Chat Widget - Angular White Card */
 .chat-widget {
-    flex: 1; /* Split half */
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 380px;
     background: white; 
-    border-radius: 0 35px 0 0; /* Top-Right Radius only */
+    border-radius: 0 30px 0 0; /* Rounded Top-Right Tip */
     display: flex;
-    padding: 30px; 
-    padding-left: 40px;
-    min-height: 140px; 
+    padding: 25px 80px 25px 80px; /* Padding compensates for skew */
     height: auto; 
-    color: var(--color-primary-dark, #0A3D62); /* Brand text color */
+    gap: 15px;
+    color: var(--color-primary-dark, #0A3D62); 
+    
+    /* 45 Degree Skew as requested */
+    -webkit-transform: skewX(45deg);
+    transform: skewX(45deg);
+    transform-origin: bottom left;
+    box-shadow: 10px 10px 30px rgba(0,0,0,0.1);
+    z-index: 10;
 }
 
-/* Dummy Widget - Right Half content */
+/* Unskew Chat Content */
+.chat-widget > * {
+    -webkit-transform: skewX(-45deg);
+    transform: skewX(-45deg);
+}
+
+/* Dummy Widget / Test Access - Transparent */
 .dummy-widget {
-  flex: 1; /* Split half */
-  background: var(--color-primary-dark, #0A3D62); /* Brand Primary Dark */
-  border-radius:  35px 0 0 35px; /* Bottom-Left Radius only */
-  border-left: none;
+  flex: 1; 
+  background: transparent; /* No background */
   display: flex;
   gap: 20px;
-  padding: 30px;
-  position: relative;
-  color: white; /* White text */
+  padding: 0 15px 15px 0px; /* Offset from the skewed white card */
+  align-items: center;
+  color: white; 
+  z-index: 5;
+}
+
+/* Reset Unskew for Dummy Widget */
+.dummy-widget > * {
+  transform: none;
 }
 
 .avatar-placeholder {
@@ -320,7 +343,9 @@
 
 /* Login Section */
 .login-section {
-  flex: 1; 
+  flex: 0 0 33.333%; 
+  width: 33.333%;
+  max-width: 33.333%;
   display: flex;
   flex-direction: column; 
   align-items: center;
@@ -336,14 +361,14 @@
   background: white;
   width: 480px;
   max-width: 90%; 
-  padding: 50px;
+  padding: 40px;
   border-radius: 30px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   margin: auto; /* Center in flex container */
-  margin-top: 40px; 
-  margin-bottom: 40px;
+  margin-top: 20px; 
+  margin-bottom: 20px;
 }
 
 .login-header {
@@ -489,10 +514,11 @@
 
 /* Footer Links - FLEX POSITIONING */
 .footer-links {
+  background-color: #082537; /* Darker Footer Background */
   position: relative;
   width: 100%;
   pointer-events: auto;
-  padding: 30px 60px;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between; 
   align-items: center;
